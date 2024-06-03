@@ -1,0 +1,105 @@
+# Taiko Preconfirmations Integration
+
+This repository contains the implementation for integrating mev-commit preconfirmations with Taiko. The goal is to enable Taiko users to receive instant preconfirmations committed by L1 execution service providers.
+
+## Overview
+
+mev-commit is a credible commitment network designed for commitment games between bidders and execution service providers, such as block builders, sequencers, and more. By leveraging preconfirmations, Taiko users can ensure their transactions are executed according to specific requirements, backed by provider stakes that can be slashed if commitments are not fulfilled.
+
+## Features
+
+- **Preconfirmations:** Real-time commitments ensuring transaction execution as specified.
+- **Integration with Taiko:** Enabling preconfirmations for Taiko transactions.
+- **Encrypted Mempool:** Enhanced transaction privacy with our latest release.
+- **Holesky Testnet:** Currently live on the Holesky testnet with ~11,000 validators opted in.
+
+## Repository Structure
+
+- **docker/**: Configuration files for Docker, including Grafana and Prometheus setup.
+  - `grafana/custom/settings.ini`
+  - `prometheus/l2/prometheus.yml`
+- **execution_engine/**: Dockerfile for the execution engine.
+  - `Dockerfile`
+- **funder/**: Dockerfile and entrypoint script for the funder.
+  - `Dockerfile`
+  - `entrypoint.sh`
+- **mev-commit/**: Dockerfile and entrypoint script for mev-commit.
+  - `Dockerfile`
+  - `entrypoint.sh`
+- **script/**: Various scripts for starting components and updating environment variables.
+  - `start-driver.sh`
+  - `start-proposer.sh`
+  - `start-prover-relayer.sh`
+  - `update-env.sh`
+- **docker-compose.yml**: Docker Compose file for setting up the integration.
+- **Makefile**: Build and deployment commands.
+- **.env.sample**: Sample environment configuration file.
+- **.gitignore**: Git ignore file.
+
+## Setup Instructions
+
+### Prerequisites
+
+- Docker and Docker Compose installed.
+- Basic understanding of Docker and containerized applications.
+
+### Steps
+
+#### Configure Environment Variables
+
+Copy the sample environment file and update the necessary values.
+
+```shell
+cp .env.sample .env
+```
+
+#### Build and Start Services
+
+Use the Makefile to build and start the services.
+
+```shell
+make build
+make up
+```
+
+#### Check the Setup
+
+Verify that all services are running correctly.
+Access the Grafana dashboard to monitor the integration.
+
+The current integration(shown by the diagram below) is a work in progress of Taiko users being able to receive instant preconfirmations committed to by L1 execution service providers. 
+<Frame>
+  <img src="/images/Taiko preconfs.png" />
+</Frame>  
+
+- **Note:** This integration presumes an established relationship between the user and the bidder bot.
+
+## Usage
+
+### Send a Transaction
+
+User sends a transaction to the Taiko node.
+
+### Bid Creation
+
+A preconfirmation bidder bot reads the mempool and creates a bid based on the transaction to the mev-commit Taiko provider.
+
+### Commitment Issuance
+
+The mev-commit Taiko provider issues a commitment and passes this information to the Taiko node.
+
+### Validation and Execution
+
+Mev-commit logic inside the Taiko node validates the operation and sends it to L1.
+
+## Next Steps
+
+1. Complete the end-to-end integration and stand up L1 preconfirmations for Taiko.
+2. Test and collect system data.
+3. Present instructions to the Taiko community on how to use preconfirmations.
+4. Once the community is familiar with the setup, discuss mainnet availability.
+5. Develop a mainnet co-incentive program to enable the Taiko community to be active in mev-commit governance and for the mev-commit ecosystem to benefit Taiko.
+
+## Contact
+
+For those interested in preconfirmations on Ethereum and beyond, please reach out to us through our [contact form](https://primev.xyz/form/). We're very excited about bringing preconfirmations to the Taiko community and more, and we'd love to hear any thoughts or feedback you have.
